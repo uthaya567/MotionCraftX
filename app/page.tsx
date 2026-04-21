@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useScroll, useTransform, AnimatePresence, Transition } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+  Transition,
+} from "framer-motion";
 import React, { useMemo, useRef, useState } from "react";
 import sc1 from "@/assets/sc1.jpg";
 import sc2 from "@/assets/sc2.jpg";
@@ -8,11 +14,22 @@ import sc3 from "@/assets/sc3.jpg";
 import person from "@/assets/person1.png";
 import Image, { StaticImageData } from "next/image";
 
-
 // ─── Floating Bubble (Optimized) ─────────────────────────────────────────────
 const FloatingBubble = React.memo(
-  ({ src, size, style, delay, emoji }: { src?: string; size: number; style?: React.CSSProperties; delay: number; emoji?: string }) => {
-    const transition :Transition = useMemo(
+  ({
+    src,
+    size,
+    style,
+    delay,
+    emoji,
+  }: {
+    src?: string;
+    size: number;
+    style?: React.CSSProperties;
+    delay: number;
+    emoji?: string;
+  }) => {
+    const transition: Transition = useMemo(
       () => ({
         opacity: { delay, duration: 0.6 },
         scale: {
@@ -28,7 +45,7 @@ const FloatingBubble = React.memo(
           ease: "easeInOut",
         },
       }),
-      [delay]
+      [delay],
     );
 
     return (
@@ -51,7 +68,7 @@ const FloatingBubble = React.memo(
         </div>
       </motion.div>
     );
-  }
+  },
 );
 FloatingBubble.displayName = "FloatingBubble";
 
@@ -89,7 +106,19 @@ WavyLines.displayName = "WavyLines";
 
 // ─── Featured Card ───────────────────────────────────────────────────────────
 const FeaturedCard = React.memo(
-  ({ title, artist, duration, delay ,coverPage}: { title: string; artist: string; duration: number; delay: number ,coverPage: StaticImageData }) => {
+  ({
+    title,
+    artist,
+    duration,
+    delay,
+    coverPage,
+  }: {
+    title: string;
+    artist: string;
+    duration: number;
+    delay: number;
+    coverPage: StaticImageData;
+  }) => {
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -109,7 +138,6 @@ const FeaturedCard = React.memo(
             className="object-cover"
             sizes="300px"
           />
-
 
           <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-full">
             {duration} min
@@ -137,13 +165,23 @@ const FeaturedCard = React.memo(
         </div>
       </motion.div>
     );
-  }
+  },
 );
 FeaturedCard.displayName = "FeaturedCard";
 
 // ─── Popular Row ─────────────────────────────────────────────────────────────
 const PopularRow = React.memo(
-  ({ rank, title, plays, delay }: { rank: number; title: string; plays: string; delay: number }) => (
+  ({
+    rank,
+    title,
+    plays,
+    delay,
+  }: {
+    rank: number;
+    title: string;
+    plays: string;
+    delay: number;
+  }) => (
     <motion.div
       className="flex items-center gap-4 py-3 border-b border-gray-100"
       initial={{ opacity: 0, x: 30 }}
@@ -158,7 +196,7 @@ const PopularRow = React.memo(
         <p className="text-xs text-gray-400">{plays} played</p>
       </div>
     </motion.div>
-  )
+  ),
 );
 PopularRow.displayName = "PopularRow";
 
@@ -168,8 +206,19 @@ export default function SoundtrackPage() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const isMobile = window.innerWidth <= 768;
-  
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize(); // run once
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const featuredTracks = [
     {
       title: "Moment of silence",
@@ -203,14 +252,18 @@ export default function SoundtrackPage() {
   return (
     <div
       className="min-h-screen font-sans md:pt-5 pt-15"
-      style={{ background: "#f0f4f0", fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}
+      style={{
+        background: "#f0f4f0",
+        fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif",
+      }}
     >
       {/* ── Hero Card ─────────────────────────────────────────────────────── */}
       <motion.div
         ref={heroRef}
         className="mx-auto relative overflow-hidden"
         style={{
-          background: "linear-gradient(160deg,#dde8de 0%,#c8d9ca 60%,#b8cebb 100%)",
+          background:
+            "linear-gradient(160deg,#dde8de 0%,#c8d9ca 60%,#b8cebb 100%)",
           borderRadius: 24,
           maxWidth: 1140,
           margin: "24px auto 0",
@@ -265,18 +318,31 @@ export default function SoundtrackPage() {
         </motion.nav>
 
         {/* ── Hero Body ────────────────────────────────────────────────────── */}
-        <div className="relative z-10 md:flex  md:flex-row  items-center px-4 md:px-10 pb-16 pt-4" style={{ minHeight: 420 }}>
+        <div
+          className="relative z-10 md:flex  md:flex-row  items-center px-4 md:px-10 pb-16 pt-4"
+          style={{ minHeight: 420 }}
+        >
           {/* Left: Text + CTA */}
           <div className="flex-1 max-w-lg">
             <motion.h1
               className="text-5xl font-black leading-tight text-[#1b3a2d]"
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4, duration: 0.7, type: "spring", stiffness: 100 }}
-              style={{ fontFamily: "'DM Serif Display', 'Georgia', serif", letterSpacing: "-0.02em" }}
+              transition={{
+                delay: 0.4,
+                duration: 0.7,
+                type: "spring",
+                stiffness: 100,
+              }}
+              style={{
+                fontFamily: "'DM Serif Display', 'Georgia', serif",
+                letterSpacing: "-0.02em",
+              }}
             >
-              Melodies<br />
-              that help you<br />
+              Melodies
+              <br />
+              that help you
+              <br />
               stay focus
             </motion.h1>
 
@@ -286,8 +352,8 @@ export default function SoundtrackPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.65, duration: 0.6 }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore
             </motion.p>
 
             {/* Email CTA */}
@@ -310,8 +376,13 @@ export default function SoundtrackPage() {
               </div>
               <motion.button
                 className="m-1.5 px-7 py-4 rounded-full text-white text-sm font-semibold whitespace-nowrap"
-                style={{ background: "linear-gradient(135deg,#2d6a4f,#1b3a2d)" }}
-                whileHover={{ scale: 1.04, background: "linear-gradient(135deg,#3a7a5f,#2d4a38)" }}
+                style={{
+                  background: "linear-gradient(135deg,#2d6a4f,#1b3a2d)",
+                }}
+                whileHover={{
+                  scale: 1.04,
+                  background: "linear-gradient(135deg,#3a7a5f,#2d4a38)",
+                }}
                 whileTap={{ scale: 0.97 }}
               >
                 Get Started
@@ -336,7 +407,7 @@ export default function SoundtrackPage() {
                       fill="#4a7c59"
                       opacity={0.35}
                     />
-                  ))
+                  )),
                 )}
               </svg>
             </motion.div>
@@ -352,41 +423,40 @@ export default function SoundtrackPage() {
               transition={{ delay: 0.5, duration: 0.8 }}
             >
               <div className="absolute -bottom-22 -right-10 select-none">
-               <Image src={person} alt="" className="w-100"/>
+                <Image src={person} alt="" className="w-100" />
               </div>
             </motion.div>
 
             <div className="z-50">
               <FloatingBubble
-              size={72}
-              src={sc1.src}
-              style={{ 
-                top: isMobile ? "-13%" : "-5%",
-                left: isMobile ? "30%" : "40%",
-              }}
-              delay={0.9}
-            />
-            <FloatingBubble
-              size={68}
-              src={sc3.src}
-              style={{ 
-                top:  isMobile ? "25%" : "42%", 
-                left: isMobile ? "10%" : "25%"
-               }}
-              delay={1.1}
-            />
-            <FloatingBubble
-              size={80}
-              src={sc2.src}
-              style={{ 
-                top: isMobile ? "7%" : "15%",
-                right:isMobile ? "0%" : "0%"
-                 }}
-              delay={1.0}
-            />
+                size={72}
+                src={sc1.src}
+                style={{
+                  top: isMobile ? "-13%" : "-5%",
+                  left: isMobile ? "30%" : "40%",
+                }}
+                delay={0.9}
+              />
+              <FloatingBubble
+                size={68}
+                src={sc3.src}
+                style={{
+                  top: isMobile ? "25%" : "42%",
+                  left: isMobile ? "10%" : "25%",
+                }}
+                delay={1.1}
+              />
+              <FloatingBubble
+                size={80}
+                src={sc2.src}
+                style={{
+                  top: isMobile ? "7%" : "15%",
+                  right: isMobile ? "0%" : "0%",
+                }}
+                delay={1.0}
+              />
             </div>
 
-           
             {[1, 2, 3].map((i) => (
               //  Sound wave rings behind the person silhouette
               <motion.div
@@ -407,8 +477,6 @@ export default function SoundtrackPage() {
                 }}
               />
             ))}
-
-           
           </div>
         </div>
       </motion.div>
@@ -430,7 +498,11 @@ export default function SoundtrackPage() {
           </motion.h2>
           <div className="flex md:gap-5 gap-2">
             {featuredTracks.map((track, i) => (
-              <FeaturedCard key={track.title} {...track} delay={0.4 + i * 0.15} />
+              <FeaturedCard
+                key={track.title}
+                {...track}
+                delay={0.4 + i * 0.15}
+              />
             ))}
           </div>
         </div>
@@ -449,7 +521,6 @@ export default function SoundtrackPage() {
             <PopularRow key={track.rank} {...track} delay={0.5 + i * 0.12} />
           ))}
         </div>
-        
       </div>
     </div>
   );
