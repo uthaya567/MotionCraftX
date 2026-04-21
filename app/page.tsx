@@ -202,7 +202,7 @@ export default function SoundtrackPage() {
 
   return (
     <div
-      className="min-h-screen font-sans"
+      className="min-h-screen font-sans md:pt-0 pt-40"
       style={{ background: "#f0f4f0", fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}
     >
       {/* ── Hero Card ─────────────────────────────────────────────────────── */}
@@ -224,7 +224,7 @@ export default function SoundtrackPage() {
 
         {/* ── Nav ──────────────────────────────────────────────────────────── */}
         <motion.nav
-          className="relative z-20 flex items-center justify-between px-10 py-6"
+          className="relative z-20 md:flex hidden items-center justify-between px-10 py-6"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -265,7 +265,7 @@ export default function SoundtrackPage() {
         </motion.nav>
 
         {/* ── Hero Body ────────────────────────────────────────────────────── */}
-        <div className="relative z-10 flex items-center px-10 pb-16 pt-4" style={{ minHeight: 420 }}>
+        <div className="relative z-10 md:flex  md:flex-row  items-center px-4 md:px-10 pb-16 pt-4" style={{ minHeight: 420 }}>
           {/* Left: Text + CTA */}
           <div className="flex-1 max-w-lg">
             <motion.h1
@@ -351,7 +351,7 @@ export default function SoundtrackPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              <div className="absolute -bottom-22 select-none">
+              <div className="absolute -bottom-22 -right-10 select-none">
                <Image src={person} alt="" className="w-100"/>
               </div>
             </motion.div>
@@ -360,7 +360,7 @@ export default function SoundtrackPage() {
               <FloatingBubble
               size={72}
               src={sc2.src}
-              style={{ top: "8%", left: "20%" }}
+              style={{ top: "8%", left: "10%" }}
               delay={0.9}
             />
             <FloatingBubble
@@ -388,12 +388,10 @@ export default function SoundtrackPage() {
               //  Sound wave rings behind the person silhouette
               <motion.div
                 key={i}
-                className="absolute rounded-full border border-[#2d6a4f]/70 z-10"
+                className="absolute rounded-full border md:top-[20%] md:left-[70%] left-[60%] top-[20%] border-[#2d6a4f]/70 z-10"
                 style={{
                   width: 60 + i * 50,
                   height: 60 + i * 50,
-                  top: "30%",
-                  left: "50%",
                   x: "-50%",
                   y: "-50%",
                 }}
@@ -407,13 +405,14 @@ export default function SoundtrackPage() {
               />
             ))}
 
+           
           </div>
         </div>
       </motion.div>
 
       {/* ── Bottom Section ─────────────────────────────────────────────────── */}
       <div
-        className="mx-auto px-10 py-10 flex gap-12"
+        className="mx-auto md:px-10 px-4 py-10 flex flex-col-reverse md:flex-row gap-12"
         style={{ maxWidth: 1140 }}
       >
         {/* Featured Melody */}
