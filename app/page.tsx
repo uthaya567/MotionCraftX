@@ -168,7 +168,7 @@ export default function SoundtrackPage() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-
+  const isMobile = window.innerWidth <= 768;
   
   const featuredTracks = [
     {
@@ -202,7 +202,7 @@ export default function SoundtrackPage() {
 
   return (
     <div
-      className="min-h-screen font-sans md:pt-0 pt-40"
+      className="min-h-screen font-sans md:pt-5 pt-15"
       style={{ background: "#f0f4f0", fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}
     >
       {/* ── Hero Card ─────────────────────────────────────────────────────── */}
@@ -359,27 +359,30 @@ export default function SoundtrackPage() {
             <div className="z-50">
               <FloatingBubble
               size={72}
-              src={sc2.src}
-              style={{ top: "8%", left: "10%" }}
+              src={sc1.src}
+              style={{ 
+                top: isMobile ? "-13%" : "-5%",
+                left: isMobile ? "30%" : "40%",
+              }}
               delay={0.9}
             />
             <FloatingBubble
               size={68}
               src={sc3.src}
-              style={{ top: "42%", left: "4%" }}
+              style={{ 
+                top:  isMobile ? "25%" : "42%", 
+                left: isMobile ? "10%" : "25%"
+               }}
               delay={1.1}
             />
             <FloatingBubble
               size={80}
               src={sc2.src}
-              style={{ top: "14%", right: "6%" }}
+              style={{ 
+                top: isMobile ? "7%" : "15%",
+                right:isMobile ? "0%" : "0%"
+                 }}
               delay={1.0}
-            />
-            <FloatingBubble
-              size={60}
-              src={sc3.src}
-              style={{ bottom: "18%", right: "0%" }}
-              delay={1.3}
             />
             </div>
 
@@ -425,7 +428,7 @@ export default function SoundtrackPage() {
           >
             Featured Melody
           </motion.h2>
-          <div className="flex gap-5">
+          <div className="flex md:gap-5 gap-2">
             {featuredTracks.map((track, i) => (
               <FeaturedCard key={track.title} {...track} delay={0.4 + i * 0.15} />
             ))}
