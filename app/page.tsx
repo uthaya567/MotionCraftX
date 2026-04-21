@@ -251,7 +251,7 @@ export default function SoundtrackPage() {
 
   return (
     <div
-      className="min-h-screen font-sans md:pt-5 pt-10"
+      className="min-h-screen font-sans md:pt-5 pt-7"
       style={{
         background: "#f0f4f0",
         fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif",
